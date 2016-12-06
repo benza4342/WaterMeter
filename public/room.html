@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Welcome to Firebase Hosting</title>
+    <link rel="stylesheet" type="text/css" href="../node_modules/semantic-ui/dist/semantic.min.css">
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/angular/angular.min.js"></script>
+    <script src="../node_modules/semantic-ui/dist/semantic.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-messaging.js"></script>
+</head>
+
+<body ng-app="app" ng-controller="RoomCtrl as vm" class="loader">
+    <div class="ui inverted labeled icon left inline vertical sidebar menu">
+        <a class="item">
+            <i class="home icon"></i> Home
+        </a>
+        <a class="item">
+            <i class="block layout icon"></i> Topics
+        </a>
+        <a class="item">
+            <i class="smile icon"></i> Friends
+        </a>
+        <a class="item">
+            <i class="calendar icon"></i> History
+        </a>
+    </div>
+    <div class="pusher">
+        <div class="ui  menu">
+            <a class="item" id="menu">
+                <i class="sidebar icon"></i> เมนู
+            </a>
+            <div class="right menu">
+                <a class="ui item"><i class="sign out icon"></i> ออกจากระบบ </a>
+            </div>
+        </div>
+        <div class="main ui container">
+            <table class="ui unstackable table blue" >
+                <thead>
+                    <tr>
+                        <th >
+                            <h4>รายการเจ้าของ</h4>
+                        </th>
+                        <th class="right aligned">
+                            <button class="ui blue  button" ng-click="vm.addOwner()" ng-cloak> <i class="users icon"></i>เพิ่ม</button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="model in vm.list track by model.id">
+                        <td class="collapsing top aligned">
+                            <i class="user icon"></i>{{model.name}}
+                        </td>
+                        <td >
+                            <div class="ui styled accordion fluid">
+                                <div class="title ">
+                                    <i class="dropdown icon"></i>มีทั้งหมด {{model.roomlist.length}} ห้อง
+                                </div>
+                                <div class="content">
+                                    <div ng-repeat="mo in model.roomlist track by mo.id" class="ui relaxed divided list" my-repeat-directive>
+                                        <div class="item" ng-click="vm.showdetail(mo.id)">
+                                            <i class="home icon"></i>
+                                            <div class="content">
+                                                <a class="header">{{mo.roomno}}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="ui modal">
+        <div class="header">จัดการเจ้าของ</div>
+        <div class="content">
+            <div class="ui form">
+                <div class="field">
+                    <label>เจ้าของ</label>
+                    <input type="text" placeholder="ชื่อ">
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui red deny button">
+                ปิด
+            </div>
+            <div class="ui positive right labeled icon button">
+                บันทึก
+                <i class="checkmark icon"></i>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="room.js"></script>
+</body>
+
+</html>

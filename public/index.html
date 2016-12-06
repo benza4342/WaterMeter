@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <title>Welcome to Firebase Hosting</title>
+        <link rel="stylesheet" type="text/css" href="../node_modules/semantic-ui/dist/semantic.min.css">
+        <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+        <script src="../node_modules/angular/angular.min.js"></script>
+        <script src="../node_modules/semantic-ui/dist/semantic.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-messaging.js"></script>
+    </head>
+
+    <body ng-app="app" ng-controller="LoginCtrl as vm">
+        <h1 class="ui center teal aligned header" style=" margin: 1em;">Water Meter</h1>
+        <div class="ui container segment center aligned" style=" margin-top: 2em;">
+            <h3 class="ui center green aligned header" style=" margin: 1em;">SignIn</h3>
+            <div class="ui form container very padded">
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        <input type="text" name="email" placeholder="E-mail address">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        <input type="password" name="password" placeholder="Password">
+                    </div>
+                </div>
+                <div class="field">
+                    <button ng-click="vm.login()" class="ui fluid green submit button">Login</button>
+                </div>
+                <h4 class="ui horizontal divider header">
+                    <i class="tag icon"></i> Or 
+                </h4>
+                <div class="field">
+                    <button class="ui fluid facebook button" ng-click="vm.fblogin()"><i class="facebook icon"></i>Facebook</button>
+                </div>
+            </div>
+        </div>
+        <script src="index.js"></script>
+    </body>
+
+</html>
