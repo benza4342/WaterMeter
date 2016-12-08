@@ -7,86 +7,106 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Welcome to Firebase Hosting</title>
-    <link rel="stylesheet" type="text/css" href="../node_modules/semantic-ui/dist/semantic.min.css">
-    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="../node_modules/angular/angular.min.js"></script>
-    <script src="../node_modules/semantic-ui/dist/semantic.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="node_modules/semantic-ui/dist/semantic.min.css">
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/angular/angular.min.js"></script>
+    <script src="node_modules/semantic-ui/dist/semantic.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-messaging.js"></script>
 </head>
 
-<body ng-app="app" ng-controller="RoomCtrl as vm" class="loader">
+<body ng-app="app" ng-controller="RoomCtrl as vm" ng-cloak>
     <div class="ui inverted labeled icon left inline vertical sidebar menu">
-        <a class="item">
-            <i class="home icon"></i> Home
-        </a>
-        <a class="item">
-            <i class="block layout icon"></i> Topics
-        </a>
-        <a class="item">
-            <i class="smile icon"></i> Friends
-        </a>
-        <a class="item">
-            <i class="calendar icon"></i> History
+        <a class="item" href="room.html">
+            <i class="home icon"></i> รายการเจ้าของ
         </a>
     </div>
     <div class="pusher">
-        <div class="ui  menu">
-            <a class="item" id="menu">
+        <div class="ui menu">
+            <a ng-click="vm.toggle()" class="item" id="menu">
                 <i class="sidebar icon"></i> เมนู
             </a>
             <div class="right menu">
-                <a class="ui item"><i class="sign out icon"></i> ออกจากระบบ </a>
+                <a ng-click="vm.logout()" class="ui item"><i class="sign out icon"></i> ออกจากระบบ </a>
             </div>
         </div>
         <div class="main ui container">
-            <table class="ui unstackable table blue" >
+            <h3 class="ui left blue aligned icon header">
+                <i class="circular users icon"></i>รายการเจ้าของ
+            </h3>
+            <table class="ui unstackable table blue">
                 <thead>
                     <tr>
-                        <th >
-                            <h4>รายการเจ้าของ</h4>
-                        </th>
-                        <th class="right aligned">
-                            <button class="ui blue  button" ng-click="vm.addOwner()" ng-cloak> <i class="users icon"></i>เพิ่ม</button>
+                        <th colspan="2" class="right aligned">
+                            <button class="ui blue button" id="btn_addOwner" ng-click="vm.modalOwner()"> <i class="users icon"></i>เพิ่ม</button>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="model in vm.list track by model.id">
+                    <tr ng-repeat="model in vm.list">
                         <td class="collapsing top aligned">
                             <i class="user icon"></i>{{model.name}}
                         </td>
-                        <td >
+                        <td>
                             <div class="ui styled accordion fluid">
                                 <div class="title ">
                                     <i class="dropdown icon"></i>มีทั้งหมด {{model.roomlist.length}} ห้อง
                                 </div>
                                 <div class="content">
-                                    <div ng-repeat="mo in model.roomlist track by mo.id" class="ui relaxed divided list" my-repeat-directive>
-                                        <div class="item" ng-click="vm.showdetail(mo.id)">
+                                    <div ng-repeat="mo in model.roomlist" class="ui relaxed divided list" my-repeat-directive>
+                                        <div class="item">
                                             <i class="home icon"></i>
                                             <div class="content">
-                                                <a class="header">{{mo.roomno}}</a>
+                                                <a class="header" ng-click="vm.modalRoom(model.id,mo.id)">{{mo.roomno}}</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <button id="btn_addRoom" style="margin-top: 0.8em;" class="ui green mini  button" ng-click="vm.modalRoom(model.id,0)"> <i class="hotel icon"></i>เพิ่มห้อง</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+        <div ng-class="vm.loading" class="ui dimmer">
+            <div class="ui " ng-class="{loader: vm.loading}" ></div>
+        </div>
     </div>
-    <div class="ui modal">
+    <div id="modalOwner" class="ui modal">
         <div class="header">จัดการเจ้าของ</div>
         <div class="content">
             <div class="ui form">
                 <div class="field">
                     <label>เจ้าของ</label>
-                    <input type="text" placeholder="ชื่อ">
+                    <input ng-model="vm.owner.name" type="text" placeholder="ชื่อ">
+                </div>
+
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui red deny button">
+                ปิด
+            </div>
+            <div class="ui positive right labeled icon button" ng-click="vm.saveOwner()">
+                บันทึก
+                <i class="checkmark icon"></i>
+            </div>
+        </div>
+    </div>
+    <div id="modalRoom" class="ui modal">
+        <div class="header">จัดการห้อง</div>
+        <div class="content">
+            <div class="ui form">
+                <div class="field">
+                    <label>ห้อง</label>
+                    <input ng-model="vm.room.roomno" type="text" placeholder="เลขที่">
+                </div>
+                <div class="field">
+                    <label>เลขมิตเตอร์</label>
+                    <input ng-model="vm.room.meter" type="text" placeholder="เลขมิตเตอร์">
                 </div>
             </div>
         </div>
@@ -94,12 +114,11 @@
             <div class="ui red deny button">
                 ปิด
             </div>
-            <div class="ui positive right labeled icon button">
+            <div class="ui positive right labeled icon button" ng-click="vm.saveRoom()">
                 บันทึก
                 <i class="checkmark icon"></i>
             </div>
         </div>
-    </div>
     </div>
     <script src="room.js"></script>
 </body>
